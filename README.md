@@ -355,39 +355,6 @@ Each step in an execution:
 }
 ```
 
-## Architectural Improvements & Design Decisions
-
-### 1. Step Indexing (Improvement #1)
-Rather than relying on array ordering or timestamps, each step explicitly has a `index` field (1-based). This ensures consistent step ordering even if data is reordered or queried.
-
-### 2. Stronger Evaluation Typing (Improvement #2)
-The `XRayEvaluation` interface provides type safety for evaluation results:
-- `passed`: boolean outcome
-- `reason`: why it passed/failed
-- `metadata`: optional context-specific data
-
-This replaces looser object structures with a well-defined interface.
-
-### 3. SDK/Transport Separation (Improvement #3)
-The SDK (`xray.ts`) does NOT call the database. Instead:
-- SDK captures data with `recordStep()` and `serialize()`
-- Persistence layer (`persistence.ts`) handles saving
-- This makes the SDK framework-agnostic and testable
-
-### 4. Execution Summaries (Improvement #4)
-Added `ExecutionSummary` with:
-- `totalSteps`: Count of steps recorded
-- `finalOutcome`: What was decided/selected
-
-This provides quick insight without reading all steps.
-
-### 5. Why Factor Visualization
-The dashboard prominently displays decision outcomes:
-- **Color-coded icons**: Green (pass), red (fail), amber (filter), blue (evaluate)
-- **Confidence levels**: Visual progress bar showing decision certainty
-- **Reason text**: Clear explanation of why the decision was made
-- **Metadata section**: Expandable for evaluation details
-
 ## Design Philosophy
 
 ### General Purpose over Domain-Specific
@@ -417,14 +384,13 @@ Each layer is independent and can be swapped or extended.
 
 | Layer | Technology |
 |-------|------------|
-| **Frontend** | React 19 + Next.js 16 (App Router) |
-| **Backend** | Node.js + Next.js Route Handlers |
-| **Database** | MongoDB with native driver |
+| **Frontend & API Calls** |  Next.js 16 (App Router) |
+| **Database** | MongoDB  Atlas |
 | **UI Components** | shadcn/ui |
 | **Styling** | Tailwind CSS v4 |
 | **Icons** | Lucide React |
 | **Language** | TypeScript |
-| **Validation** | Zod |
+
 
 ## Project Structure
 
@@ -514,21 +480,6 @@ npm start
 npm run lint
 ```
 
-## Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. Push code to GitHub
-2. Connect repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy with one click
-
-### Deploy to Other Platforms
-
-- **Docker**: Add Dockerfile for containerization
-- **AWS**: Deploy to EC2, Lambda, or ECS
-- **GCP**: Deploy to Cloud Run
-- **Self-Hosted**: Run `npm start` on any Node.js server
 
 ## Example Use Cases
 
@@ -547,45 +498,4 @@ Trace decision factors in loan approval/denial workflows.
 ### Healthcare: Diagnosis Workflow
 Log clinical decision-making process for medical diagnoses.
 
-## Contributing
 
-This is a production-ready reference implementation. Feel free to:
-- Fork and customize for your use case
-- Add domain-specific step renderers
-- Implement additional storage backends
-- Extend with visualization types
-- Contribute improvements back
-
-## License
-
-MIT
-
----
-
-## Video Walkthrough
-
-For a 5-10 minute walkthrough of the system:
-1. Visit http://localhost:3000
-2. Click "Run Demo Execution"
-3. Observe the execution appear in the list
-4. Click on it to see the complete decision trace
-5. Expand steps to see inputs, outputs, and decision outcomes
-
-The demo shows:
-- How the SDK captures each decision
-- How the dashboard visualizes execution traces
-- How the "why factor" explains decision reasoning
-- How evaluation steps show filtering and ranking logic
-
-For best results, use Chrome or Edge browser for optimal visualization performance.
-
-## Support
-
-Need help? Open an issue on GitHub or contact the maintainers.
-
-## Troubleshooting
-
-- **Dashboard not loading**: Check that MongoDB is running and the connection string is correct
-- **Demo execution fails**: Verify environment variables are set correctly
-- **Performance issues**: The visualization can be slow with very large traces; consider filtering or pagination for large datasets
-- **Browser compatibility**: For best experience, use Chrome or Edge browser
