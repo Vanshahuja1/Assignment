@@ -17,11 +17,17 @@ X-Ray is a general-purpose system that captures and visualizes the complete deci
 ## Key Features
 
 ✅ **General-Purpose SDK** - Works with any multi-step workflow, not just one domain
+
 ✅ **Decision Tracking** - Capture outcomes, confidence levels, and reasoning at each step
+
 ✅ **Beautiful Dashboard** - Interactive visualization of execution traces
+
 ✅ **MongoDB Persistence** - Durable storage with flexible schema
+
 ✅ **Evaluation Support** - Built-in helpers for ranking and filtering steps
+
 ✅ **Production Ready** - Type-safe, well-tested, error-handled code
+
 ✅ **Zero Config** - Works out of the box with mock data or MongoDB
 
 ## Architecture
@@ -114,6 +120,13 @@ Step 5: Rank & Select
 ```
 
 Run the demo from the dashboard to see this in action.
+
+
+### My Thinking On Paper
+
+<p align="center">
+  <img src="My Thinking On Paper.jpeg" alt="Project Banner" width="400">
+</p>
 
 ## Getting Started
 
